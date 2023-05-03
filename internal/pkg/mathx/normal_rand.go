@@ -1,34 +1,13 @@
-package main
+package mathx
 
 import (
-	"fmt"
-	"image"
-	"image/draw"
 	"math"
 	"math/rand"
-	"os"
 	"time"
 )
 
-// 把样本图片变成image.Image
-func readPic(path string) image.Image {
-	f, err := os.Open(path)
-	if err != nil {
-		panic(err)
-	}
-	defer f.Close()
-
-	img, fmtName, err := image.Decode(f)
-	if err != nil {
-		panic(err)
-	}
-	fmt.Printf("Name: %v, Bounds: %+v, Color: %+v", fmtName, img.Bounds(), img.ColorModel())
-
-	return img
-}
-
 func RandFromRangeInt64(min int64, max int64) int64 {
-	rand.Seed(time.Now().UnixNano())
+	rand.New(rand.NewSource(time.Now().UnixNano()))
 	return rand.Int63n(max-min) + min
 }
 
@@ -62,11 +41,4 @@ func RandomNormalInt64(min int64, max int64, miu int64, sigma int64) (bool, int6
 		}
 	}
 	return true, x
-}
-
-func jpg2RGBA(img image.Image) *image.RGBA {
-	tmp := image.NewRGBA(img.Bounds())
-
-	draw.Draw(tmp, img.Bounds(), img, img.Bounds().Min, draw.Src)
-	return tmp
 }

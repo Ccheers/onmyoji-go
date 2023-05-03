@@ -3,6 +3,7 @@ module github.com/Ccheers/onmyoji-go
 go 1.19
 
 require (
+	github.com/ccheers/xpkg v1.0.5
 	github.com/fatih/color v1.13.0
 	github.com/go-vgo/robotgo v1.0.0-beta6
 	github.com/vcaesar/gcv v0.40.5
@@ -19,6 +20,7 @@ require (
 	github.com/power-devops/perfstat v0.0.0-20220216144756-c35f1ee13d7c // indirect
 	github.com/robotn/xgb v0.0.0-20190912153532-2cb92d044934 // indirect
 	github.com/robotn/xgbutil v0.0.0-20190912154524-c861d6f87770 // indirect
+	github.com/satori/go.uuid v1.2.0 // indirect
 	github.com/shirou/gopsutil/v3 v3.22.10 // indirect
 	github.com/tklauser/go-sysconf v0.3.11 // indirect
 	github.com/tklauser/numcpus v0.6.0 // indirect
@@ -28,6 +30,7 @@ require (
 	github.com/vcaesar/tt v0.20.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
 	gocv.io/x/gocv v0.30.0 // indirect
+	golang.org/x/exp v0.0.0-20230321023759-10a507213a29 // indirect
 	golang.org/x/image v0.1.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
 )
