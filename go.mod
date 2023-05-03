@@ -1,4 +1,4 @@
-module github.com/Ccheers/Onmyoji-go
+module github.com/Ccheers/onmyoji-go
 
 go 1.19
 
