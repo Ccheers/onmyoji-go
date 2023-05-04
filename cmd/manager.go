@@ -158,7 +158,7 @@ func formatScene(sceneMap map[string]*biz.Scene, modName string, imgPath string,
 				target = biz.NewScene(targetName)
 				sceneMap[targetName] = target
 			}
-			scene.AddBtn(impl.NewScreenBtn(filename, img, target))
+			scene.AddNextBtn(impl.NewScreenBtn(filename, img, target))
 		default:
 			scene.AddBtn(impl.NewScreenBtn(filename, img, scene))
 		}

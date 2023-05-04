@@ -49,6 +49,7 @@ func main() {
 	flag.Parse()
 
 	cfg := getManagerConfig()
+	color.Green("当前配置参数:%+v", cfg)
 	manager, err := NewManager(cfg)
 	if err != nil {
 		panic(err)

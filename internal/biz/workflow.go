@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"image"
 	"sync"
+	"time"
 
 	"github.com/Ccheers/onmyoji-go/internal/pkg/fnx"
 	"github.com/fatih/color"
@@ -101,19 +102,19 @@ func (x *Workflow) Run(ctx context.Context) error {
 
 	// 错误场景修复
 	if !x.scene.match(ctx, screenImg) {
-		color.Yellow("当前场景不匹配，尝试修复")
+		color.Yellow("当前场景(%s)不匹配，尝试修复", x.scene.name)
 		x.autoSelectScene(ctx, screenImg)
 	}
 
 	for _, btn := range x.scene.btns {
-		_, err := x.opBtn(ctx, screenImg, btn)
+		err := x.opBtn(ctx, screenImg, btn)
 		if err != nil {
 			return err
 		}
 	}
 
 	for _, btn := range x.scene.nextBtns {
-		match, err := x.opBtn(ctx, screenImg, btn)
+		match, err := x.opNextBtn(ctx, screenImg, btn)
 		if err != nil {
 			return err
 		}
@@ -125,7 +126,23 @@ func (x *Workflow) Run(ctx context.Context) error {
 	return nil
 }
 
-func (x *Workflow) opBtn(ctx context.Context, screenImg image.Image, btn Button) (bool, error) {
+func (x *Workflow) opBtn(ctx context.Context, screenImg image.Image, btn Button) error {
+	var match bool
+	fnx.FnCost(ctx, btn.Name()+":匹配", func(ctx context.Context) {
+		match = btn.Match(ctx, screenImg)
+	})
+	if match {
+		var err error
+		fnx.FnCost(ctx, btn.Name()+":点击", func(ctx context.Context) {
+			err = btn.Click()
+		})
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+func (x *Workflow) opNextBtn(ctx context.Context, screenImg image.Image, btn Button) (bool, error) {
 	var match bool
 	fnx.FnCost(ctx, btn.Name()+":匹配", func(ctx context.Context) {
 		match = btn.Match(ctx, screenImg)
@@ -138,10 +155,17 @@ func (x *Workflow) opBtn(ctx context.Context, screenImg image.Image, btn Button)
 		if err != nil {
 			return false, err
 		}
+		time.Sleep(time.Second * 2)
+		fnx.FnCost(ctx, fmt.Sprintf("%s:下一步捕获并保存当前屏幕", x.scene.name), func(ctx context.Context) {
+			screenImg = robotgo.CaptureImg()
+		})
+
 		next := btn.Next()
 		if next.match(ctx, screenImg) {
 			x.selectScene(next)
+			return match, nil
 		}
+		color.Yellow("场景(%s)不匹配", next.name)
 	}
 	return match, nil
 }

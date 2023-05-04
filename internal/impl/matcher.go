@@ -5,6 +5,7 @@ import (
 	"image"
 
 	"github.com/Ccheers/onmyoji-go/internal/pkg/imgx"
+	"github.com/fatih/color"
 	"github.com/vcaesar/gcv"
 )
 
@@ -24,6 +25,7 @@ func (x *ScreenMatcherImpl) Name() string {
 func (x *ScreenMatcherImpl) Match(ctx context.Context, screen image.Image) bool {
 	// 把image.Image统一转换成image.RGBA，不然会断言失败
 	// 进行图像识别
+	color.White("%s: 开始进行图像匹配", x.name)
 	_, num, _, _ := gcv.FindImg(imgx.Jpg2RGBA(x.target), imgx.Jpg2RGBA(screen))
 	return num > 0.9
 }
